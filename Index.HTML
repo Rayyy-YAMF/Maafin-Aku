@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maafin Aku Ya 🥺</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8547a;
+    --blush: #f7c5d0;
+    --cream: #fdf6f0;
+    --dark: #2a1a20;
+    --mid: #7a4a58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Floating hearts background */
+  .hearts-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .heart-float {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
+  }
+
+  /* Main container */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  /* Envelope open animation */
+  .envelope-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .envelope {
+    font-size: 5rem;
+    cursor: pointer;
+    animation: pulse 2s ease-in-out infinite;
+    transition: transform 0.3s;
+    user-select: none;
+  }
+
+  .envelope:hover { transform: scale(1.15) rotate(-5deg); }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  .tap-hint {
+    font-size: 0.75rem;
+    color: var(--mid);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* Card */
+  .card {
+    background: white;
+    border-radius: 2px;
+    max-width: 520px;
+    width: 100%;
+    padding: 50px 44px;
+    box-shadow: 0 20px 80px rgba(232,84,122,0.12), 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-top: 4px solid var(--rose);
+  }
+
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Decorative corner */
+  .card::before {
+    content: '❧';
+    position: absolute;
+    top: 16px; right: 20px;
+    color: var(--blush);
+    font-size: 1.5rem;
+  }
+
+  .card-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  h1 span {
+    color: var(--rose);
+    font-style: normal;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--blush);
+    margin: 0 0 28px 0;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #5a3a46;
+    margin-bottom: 16px;
+  }
+
+  p strong {
+    color: var(--dark);
+    font-weight: 400;
+  }
+
+  .highlight {
+    background: linear-gradient(to bottom, transparent 60%, #fce4ec 60%);
+    padding: 0 2px;
+  }
+
+  /* Promise list */
+  .promises {
+    background: var(--cream);
+    border-left: 3px solid var(--rose);
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .promises-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--rose);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .promise-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--mid);
+    align-items: flex-start;
+  }
+
+  .promise-item::before {
+    content: '♡';
+    color: var(--rose);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .sign-off {
+    margin-top: 32px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--dark);
+  }
+
+  /* Forgive button */
+  .btn-wrap {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-forgive {
+    background: var(--rose);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-forgive::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-forgive:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(232,84,122,0.35);
+  }
+
+  .btn-forgive:hover::after { opacity: 0.1; }
+  .btn-forgive:active { transform: translateY(0); }
+
+  .btn-not-yet {
+    background: none;
+    border: 1px solid #e0c8d0;
+    color: #b89aa4;
+    padding: 10px 28px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  /* Reaction overlay */
+  .reaction {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(253,246,240,0.97);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    animation: fadeIn 0.5s;
+  }
+
+  .reaction.show { display: flex; }
+
+  .reaction-emoji { font-size: 5rem; margin-bottom: 20px; }
+
+  .reaction h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--dark);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .reaction p {
+    max-width: 360px;
+    color: var(--mid);
+    font-size: 0.95rem;
+  }
+
+  .confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  .c-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: confettiFall linear forwards;
+    opacity: 0;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .close-reaction {
+    margin-top: 28px;
+    background: none;
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    padding: 10px 28px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.3s;
+  }
+
+  .close-reaction:hover { background: var(--rose); color: white; }
+
+  /* Not yet button chasing */
+  @media (min-width: 600px) {
+    .btn-not-yet.chasing {
+      transition: left 0.1s, top 0.1s;
+      position: fixed;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating hearts -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- Confetti layer -->
+<div class="confetti" id="confetti"></div>
+
+<!-- Forgiven overlay -->
+<div class="reaction" id="reactionYes">
+  <div class="reaction-emoji">🥰</div>
+  <h2>Makasih udah maafin aku!</h2>
+  <p>Aku janji bakal lebih perhatian dari sekarang. Sayang kamu banget 💕</p>
+  <button class="close-reaction" onclick="document.getElementById('reactionYes').classList.remove('show')">Tutup</button>
+</div>
+
+<!-- Not yet overlay -->
+<div class="reaction" id="reactionNo">
+  <div class="reaction-emoji">😢</div>
+  <h2>Aku ngerti...</h2>
+  <p>Aku emang salah. Aku bakal terus minta maaf sampai kamu mau maafin aku. Sayang kamu 🥺</p>
+  <button class="close-reaction" onclick="document.getElementById('reactionNo').classList.remove('show')">Tutup</button>
+</div>
+
+<div class="wrapper">
+  <!-- Envelope -->
+  <div class="envelope-section">
+    <div class="envelope" id="envelope" onclick="openEnvelope()" title="Klik untuk buka surat">💌</div>
+    <div class="tap-hint">Klik untuk buka surat</div>
+  </div>
+
+  <!-- Main card -->
+  <div class="card" id="card">
+    <div class="card-label">Surat dari hatiku</div>
+    <h1>Maafin <span>Aku</span> ya, Sayang?</h1>
+    <div class="divider"></div>
+
+    <p>
+      Hei, <strong>kamu yang paling aku sayang</strong> — aku tahu kamu mungkin lagi nunggu kabar dari aku semalam dan aku nggak ngabarin. Itu salah aku banget dan aku nggak mau ngeles.
+    </p>
+
+    <p>
+      Semalam aku <span class="highlight">lupa ngabarin</span>, tapi itu bukan alasan yang cukup buat bikin kamu khawatir. Kamu berhak dapat kabar dariku setiap saat.
+    </p>
+
+    <p>
+      Aku nggak mau kamu tidur semalam dengan rasa was-was atau bete sendirian. Itu nggak adil buat kamu, dan aku nyesel banget.
+    </p>
+
+    <div class="promises">
+      <div class="promises-title">Janjiku buat kamu:</div>
+      <div class="promise-item">Selalu kasih kabar kalau aku bakal lama nggak bisa dihubungi</div>
+      <div class="promise-item">Nggak biarkan kamu khawatir sendirian lagi</div>
+      <div class="promise-item">Lebih perhatian dan peka sama perasaan kamu</div>
+      <div class="promise-item">Traktir kamu sebagai tanda maaf 🍜</div>
+    </div>
+
+    <p>
+      Kamu adalah orang paling penting di hidupku. Aku nggak mau kehilangan kepercayaan kamu hanya karena kecerobohanku.
+    </p>
+
+    <div class="sign-off">
+      Dengan sepenuh hati, <br>— Aku yang menyesal 🥺
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn-forgive" onclick="forgive()">💕 Iya, aku maafin kamu</button>
+      <button class="btn-not-yet" id="btnNo" onmouseover="chaseButton(this)" onclick="notYet()">Belum mau maafin</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Generate floating hearts
+  const heartsBg = document.getElementById('heartsBg');
+  const heartEmojis = ['💕','💗','💓','🩷','❤️','💖'];
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+    h.style.animationDuration = (8 + Math.random() * 12) + 's';
+    h.style.animationDelay = (Math.random() * 15) + 's';
+    heartsBg.appendChild(h);
+  }
+
+  // Open envelope
+  let opened = false;
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+    const env = document.getElementById('envelope');
+    env.style.animation = 'none';
+    env.textContent = '📬';
+    setTimeout(() => {
+      env.textContent = '✉️';
+      document.getElementById('card').classList.add('visible');
+    }, 400);
+  }
+
+  // Forgive
+  function forgive() {
+    spawnConfetti();
+    setTimeout(() => {
+      document.getElementById('reactionYes').classList.add('show');
+    }, 300);
+  }
+
+  // Not yet — chase button on desktop
+  let chasing = false;
+  function chaseButton(btn) {
+    if (window.innerWidth < 600 || chasing) return;
+    chasing = true;
+    btn.classList.add('chasing');
+    moveAway(btn);
+  }
+
+  function moveAway(btn) {
+    if (!chasing) return;
+    const randX = Math.random() * (window.innerWidth - 160);
+    const randY = Math.random() * (window.innerHeight - 60);
+    btn.style.left = randX + 'px';
+    btn.style.top = randY + 'px';
+  }
+
+  function notYet() {
+    chasing = false;
+    document.getElementById('reactionNo').classList.add('show');
+    const btn = document.getElementById('btnNo');
+    btn.classList.remove('chasing');
+    btn.style.left = '';
+    btn.style.top = '';
+  }
+
+  // Confetti
+  function spawnConfetti() {
+    const container = document.getElementById('confetti');
+    container.innerHTML = '';
+    const colors = ['#e8547a','#f7c5d0','#ffb3c1','#ff8fa3','#ff4d6d','#fde8f0'];
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'c-piece';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      c.style.animationDelay = (Math.random() * 0.8) + 's';
+      c.style.width = c.style.height = (5 + Math.random() * 8) + 'px';
+      const shapes = ['50%','2px','0'];
+      c.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+      container.appendChild(c);
+    }
+  }
+
+  // Auto open after 2.5s hint
+  setTimeout(() => {
+    document.querySelector('.tap-hint').style.opacity = '1';
+  }, 1500);
+</script>
+</body>
+</html>
